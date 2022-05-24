@@ -1,0 +1,9 @@
+body{
+    height: 100vh;
+}
+.card{
+    border:none !important;
+} 
+#login .row{
+    margin:0 !important;
+}

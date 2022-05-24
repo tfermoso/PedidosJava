@@ -82,7 +82,7 @@ public class UsuarioService {
             stm.setString(4,email);
             stm.setString(5,username);
             stm.setString(6,HashPassword.hash(password));
-            int result=stm.executeUpdate();
+            int result=stm.executeUpdate();          
             if(result>0){
                 return true;
             }else{
