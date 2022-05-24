@@ -4,6 +4,14 @@
         <servlet-name>LoginController</servlet-name>
         <servlet-class>com.mycompany.pedidos.Servlets.LoginController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>PedidosController</servlet-name>
+        <servlet-class>com.mycompany.pedidos.Servlets.PedidosController</servlet-class>
+    </servlet>
+     <servlet-mapping>
+        <servlet-name>PedidosController</servlet-name>
+        <url-pattern>/gestion</url-pattern>
+    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>LoginController</servlet-name>
         <url-pattern>/</url-pattern>

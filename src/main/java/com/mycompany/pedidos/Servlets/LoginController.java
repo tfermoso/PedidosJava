@@ -60,14 +60,14 @@ public class LoginController extends HttpServlet {
             if (user != null) {
                 HttpSession session = request.getSession();
                 session.setAttribute("userSession", user);
-                response.sendRedirect(request.getContextPath() + "/pedidos");
-            }else {
+                response.sendRedirect(request.getContextPath() + "/gestion");
+            } else {
                 request.getServletContext().setAttribute("error", "Usuario o contraseña incorrecta");
                 RequestDispatcher dispatcher = request.getRequestDispatcher("Views/login.jsp");
                 dispatcher.forward(request, response);
             }
-        } else{
-            
+        } else {
+
         }
     }
 
