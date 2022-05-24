@@ -5,6 +5,7 @@
 package com.mycompany.pedidos.Servicios;
 
 import com.mycompany.pedidos.Config.Conexion;
+import com.mycompany.pedidos.Config.HashPassword;
 import com.mycompany.pedidos.Models.Usuario;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -26,14 +27,16 @@ public class UsuarioService {
     }
     
     public Usuario login(String username,String pass)
+         
    {
+       String password=HashPassword.hash(pass);
         String sql="select * from cliente where username=? and password=?";
         PreparedStatement stm=null;
         ResultSet rs=null;
         try {
             stm=conn.prepareStatement(sql);
             stm.setString(1,username);
-            stm.setString(2,pass);
+            stm.setString(2,password);
             rs=stm.executeQuery();
             if(rs.next()){
                 Usuario usuario=new Usuario();
@@ -72,20 +75,39 @@ public class UsuarioService {
         String sql="insert into cliente (nombre,cif,telefono,email,username,password) value (?,?,?,?,?,?)";
         PreparedStatement stm=null;
         try {
-            stm=conn.prepareStatement(sql);
+            stm=conn.prepareStatement(sql,PreparedStatement.RETURN_GENERATED_KEYS);
             stm.setString(1,nombre);
             stm.setString(2,cif);
             stm.setString(3,telefono);
             stm.setString(4,email);
             stm.setString(5,username);
-           
-            
+            stm.setString(6,HashPassword.hash(password));
+            int result=stm.executeUpdate();
+            if(result>0){
+                return true;
+            }else{
+                return false;
+            }
         } catch (SQLException ex) {
             Logger.getLogger(UsuarioService.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }finally{
+            if(stm!=null){
+                try {
+                    stm.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(UsuarioService.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            if(conn!=null){
+                try {
+                    conn.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(UsuarioService.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
         }
-        
-        
-        return true;
+
     }
     
     

@@ -5,6 +5,7 @@
 
 package com.mycompany.pedidos.Servlets;
 
+import com.mycompany.pedidos.Servicios.UsuarioService;
 import jakarta.servlet.RequestDispatcher;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -32,6 +33,9 @@ public class LoginController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
+        
+      UsuarioService usuarioService=new UsuarioService();
+      usuarioService.registrar("Pedro", "A23454666", "986767676", "juan@gmail.com", "pedro", "Fter.45!34F");
       RequestDispatcher dispatcher=request.getRequestDispatcher("Views/login.jsp");
       dispatcher.forward(request, response);
     } 
