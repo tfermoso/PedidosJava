@@ -4,6 +4,11 @@ body{
 .card{
     border:none !important;
 } 
-#login .row{
+#login .row,#register .row{
     margin:0 !important;
+}
+
+.error{
+    
+
 }

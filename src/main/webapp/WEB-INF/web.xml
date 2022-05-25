@@ -8,7 +8,11 @@
         <servlet-name>PedidosController</servlet-name>
         <servlet-class>com.mycompany.pedidos.Servlets.PedidosController</servlet-class>
     </servlet>
-     <servlet-mapping>
+    <servlet>
+        <servlet-name>AjaxServlet</servlet-name>
+        <servlet-class>com.mycompany.pedidos.Servlets.AjaxServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
         <servlet-name>PedidosController</servlet-name>
         <url-pattern>/gestion</url-pattern>
     </servlet-mapping>
@@ -19,6 +23,10 @@
     <servlet-mapping>
         <servlet-name>default</servlet-name>
         <url-pattern>/static/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AjaxServlet</servlet-name>
+        <url-pattern>/api</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

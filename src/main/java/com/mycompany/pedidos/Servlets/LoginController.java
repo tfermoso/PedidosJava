@@ -34,9 +34,15 @@ public class LoginController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        UsuarioService usuarioService = new UsuarioService();
-        usuarioService.registrar("Pedro", "A23454666", "986767676", "juan@gmail.com", "pedro", "Fter.45!34F");
-        RequestDispatcher dispatcher = request.getRequestDispatcher("Views/login.jsp");
+        //UsuarioService usuarioService = new UsuarioService();
+        //usuarioService.registrar("Pedro", "A23454666", "986767676", "juan@gmail.com", "pedro", "Fter.45!34F");
+        request.getServletContext().setAttribute("error", "");
+        RequestDispatcher dispatcher;
+        if (request.getParameter("registrarse") != null) {
+            dispatcher = request.getRequestDispatcher("Views/register.jsp");
+        } else {
+            dispatcher = request.getRequestDispatcher("Views/login.jsp");
+        }
         dispatcher.forward(request, response);
     }
 
@@ -52,10 +58,11 @@ public class LoginController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String accion = request.getParameter("accion");
+        UsuarioService userS = new UsuarioService();
         if ("Sign in".equals(accion)) {
             String username = request.getParameter("username");
             String pass = request.getParameter("password");
-            UsuarioService userS = new UsuarioService();
+
             Usuario user = userS.login(username, pass);
             if (user != null) {
                 HttpSession session = request.getSession();
@@ -67,6 +74,27 @@ public class LoginController extends HttpServlet {
                 dispatcher.forward(request, response);
             }
         } else {
+            String nombre = request.getParameter("nombre");
+            String cif = request.getParameter("cif");
+            String telefono = request.getParameter("telefono");
+            String email = request.getParameter("email");
+            String username = request.getParameter("username");
+            String pass = request.getParameter("password");
+            if (userS.registrar(nombre, cif, telefono, email, username, pass)) {
+                userS = new UsuarioService();
+                Usuario user = userS.login(username, pass);
+                if (user != null) {
+                    HttpSession session = request.getSession();
+                    session.setAttribute("userSession", user);
+                    response.sendRedirect(request.getContextPath() + "/gestion");
+                } else {
+                    request.getServletContext().setAttribute("error", "Error en el login");
+                }
+            } else {
+                request.getServletContext().setAttribute("error", "Error al crear el cliente, contacte con el administrador");
+                RequestDispatcher dispatcher = request.getRequestDispatcher("Views/register.jsp");
+                dispatcher.forward(request, response);
+            }
 
         }
     }

@@ -109,6 +109,43 @@ public class UsuarioService {
         }
 
     }
+
+    public boolean comprobar(String valor, String campo) {
+        PreparedStatement stm=null;
+        
+        try {
+            String sql="select * from cliente where "+campo+"=?";
+            stm=conn.prepareStatement(sql);
+            stm.setString(1, valor);
+            ResultSet rs=stm.executeQuery();
+            if(rs.next()){
+                return true;
+            }else{
+                return false;
+            }          
+        } catch (SQLException ex) {
+            Logger.getLogger(UsuarioService.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }finally{
+            if(stm!=null){
+                try {
+                    stm.close();
+                            } catch (SQLException ex) {
+                    Logger.getLogger(UsuarioService.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            if(conn!=null){
+                try {
+                    conn.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(UsuarioService.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                
+            }
+        }
+        
+        
+    }
     
     
 }
