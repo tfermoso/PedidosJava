@@ -16,6 +16,11 @@
         <servlet-name>Servlet404</servlet-name>
         <servlet-class>com.mycompany.pedidos.Servlets.Servlet404</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>Faces Servlet</servlet-name>
+        <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
     <servlet-mapping>
         <servlet-name>PedidosController</servlet-name>
         <url-pattern>/gestion</url-pattern>
@@ -39,6 +44,10 @@
     <servlet-mapping>
         <servlet-name>Servlet404</servlet-name>
         <url-pattern>/404</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Faces Servlet</servlet-name>
+        <url-pattern>/faces/*</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

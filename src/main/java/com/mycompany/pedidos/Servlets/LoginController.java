@@ -86,7 +86,8 @@ public class LoginController extends HttpServlet {
                 ck.setMaxAge(0);//changing the maximum age to 0 seconds  
                 response.addCookie(ck);//adding cookie in the response 
             } else {
-                Cookie ck = new Cookie("username", username);//creating cookie object  
+                Cookie ck = new Cookie("username", username);//creating cookie object 
+                ck.setMaxAge(60*5);
                 response.addCookie(ck);
             }
             Usuario user = userS.login(username, pass);
