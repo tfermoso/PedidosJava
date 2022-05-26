@@ -10,6 +10,7 @@ import jakarta.servlet.RequestDispatcher;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -37,13 +38,31 @@ public class LoginController extends HttpServlet {
         //UsuarioService usuarioService = new UsuarioService();
         //usuarioService.registrar("Pedro", "A23454666", "986767676", "juan@gmail.com", "pedro", "Fter.45!34F");
         request.getServletContext().setAttribute("error", "");
-        RequestDispatcher dispatcher;
+        RequestDispatcher dispatcher = null;
+
         if (request.getParameter("registrarse") != null) {
             dispatcher = request.getRequestDispatcher("Views/register.jsp");
+            dispatcher.forward(request, response);
         } else {
-            dispatcher = request.getRequestDispatcher("Views/login.jsp");
+            Usuario usuario = (Usuario) request.getSession().getAttribute("userSession");
+            if (usuario != null) {
+                response.sendRedirect(request.getContextPath() + "/gestion");
+            } else {
+                String username = "";
+                if (request.getCookies() != null) {
+                    for (int i = 0; i < request.getCookies().length; i++) {
+                        Cookie cooky = request.getCookies()[i];
+                        if (cooky.getName().equals("username")) {
+                            username = cooky.getValue();
+                        }
+                    }
+                }
+                request.setAttribute("username", username);
+                dispatcher = request.getRequestDispatcher("Views/login.jsp");
+                dispatcher.forward(request, response);
+            }
         }
-        dispatcher.forward(request, response);
+
     }
 
     /**
@@ -62,7 +81,14 @@ public class LoginController extends HttpServlet {
         if ("Sign in".equals(accion)) {
             String username = request.getParameter("username");
             String pass = request.getParameter("password");
-
+            if (request.getParameter("remember") == null) {
+                Cookie ck = new Cookie("username", "");//deleting value of cookie  
+                ck.setMaxAge(0);//changing the maximum age to 0 seconds  
+                response.addCookie(ck);//adding cookie in the response 
+            } else {
+                Cookie ck = new Cookie("username", username);//creating cookie object  
+                response.addCookie(ck);
+            }
             Usuario user = userS.login(username, pass);
             if (user != null) {
                 HttpSession session = request.getSession();

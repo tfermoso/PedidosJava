@@ -12,6 +12,10 @@
         <servlet-name>AjaxServlet</servlet-name>
         <servlet-class>com.mycompany.pedidos.Servlets.AjaxServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>Servlet404</servlet-name>
+        <servlet-class>com.mycompany.pedidos.Servlets.Servlet404</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>PedidosController</servlet-name>
         <url-pattern>/gestion</url-pattern>
@@ -27,6 +31,14 @@
     <servlet-mapping>
         <servlet-name>AjaxServlet</servlet-name>
         <url-pattern>/api</url-pattern>
+    </servlet-mapping>
+    <error-page>
+        <error-code>404</error-code>
+        <location>/404</location>
+    </error-page>
+    <servlet-mapping>
+        <servlet-name>Servlet404</servlet-name>
+        <url-pattern>/404</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
