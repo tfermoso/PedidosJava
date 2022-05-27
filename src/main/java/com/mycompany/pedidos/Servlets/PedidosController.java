@@ -27,9 +27,18 @@ public class PedidosController extends HttpServlet {
         Usuario user = (Usuario) request.getSession().getAttribute("userSession");
         if (user == null) {
             response.sendRedirect(request.getContextPath() + "/");
-        }else{  
+        } else {
+
             request.setAttribute("user", user);
-            RequestDispatcher dispatcher = request.getRequestDispatcher("Views/Gestion/index.jsp");
+            RequestDispatcher dispatcher = null;
+            if (request.getParameter("lista") != null) {
+                dispatcher = request.getRequestDispatcher("Views/Gestion/listapedidos.jsp");
+            } else if (request.getParameter("id") != null) {
+                dispatcher = request.getRequestDispatcher("Views/Gestion/editarpedido.jsp");
+            } else {
+                dispatcher = request.getRequestDispatcher("Views/Gestion/index.jsp");
+
+            }
             dispatcher.forward(request, response);
         }
     }
