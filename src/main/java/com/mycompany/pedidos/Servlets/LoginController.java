@@ -35,34 +35,41 @@ public class LoginController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        //UsuarioService usuarioService = new UsuarioService();
-        //usuarioService.registrar("Pedro", "A23454666", "986767676", "juan@gmail.com", "pedro", "Fter.45!34F");
-        request.getServletContext().setAttribute("error", "");
-        RequestDispatcher dispatcher = null;
-
-        if (request.getParameter("registrarse") != null) {
-            dispatcher = request.getRequestDispatcher("Views/register.jsp");
-            dispatcher.forward(request, response);
+        if (request.getParameter("logout") != null) {
+            request.getSession().invalidate();
+            Cookie ck = new Cookie("JSESSIONID", "");//deleting value of cookie  
+            ck.setMaxAge(0);//changing the maximum age to 0 seconds  
+            response.addCookie(ck);//adding cookie in the response 
+            response.sendRedirect(request.getContextPath() + "/");
         } else {
-            Usuario usuario = (Usuario) request.getSession().getAttribute("userSession");
-            if (usuario != null) {
-                response.sendRedirect(request.getContextPath() + "/gestion");
+            //UsuarioService usuarioService = new UsuarioService();
+            //usuarioService.registrar("Pedro", "A23454666", "986767676", "juan@gmail.com", "pedro", "Fter.45!34F");
+            request.getServletContext().setAttribute("error", "");
+            RequestDispatcher dispatcher = null;
+
+            if (request.getParameter("registrarse") != null) {
+                dispatcher = request.getRequestDispatcher("Views/register.jsp");
+                dispatcher.forward(request, response);
             } else {
-                String username = "";
-                if (request.getCookies() != null) {
-                    for (int i = 0; i < request.getCookies().length; i++) {
-                        Cookie cooky = request.getCookies()[i];
-                        if (cooky.getName().equals("username")) {
-                            username = cooky.getValue();
+                Usuario usuario = (Usuario) request.getSession().getAttribute("userSession");
+                if (usuario != null) {
+                    response.sendRedirect(request.getContextPath() + "/gestion");
+                } else {
+                    String username = "";
+                    if (request.getCookies() != null) {
+                        for (int i = 0; i < request.getCookies().length; i++) {
+                            Cookie cooky = request.getCookies()[i];
+                            if (cooky.getName().equals("username")) {
+                                username = cooky.getValue();
+                            }
                         }
                     }
+                    request.setAttribute("username", username);
+                    dispatcher = request.getRequestDispatcher("Views/login.jsp");
+                    dispatcher.forward(request, response);
                 }
-                request.setAttribute("username", username);
-                dispatcher = request.getRequestDispatcher("Views/login.jsp");
-                dispatcher.forward(request, response);
             }
         }
-
     }
 
     /**
@@ -87,7 +94,7 @@ public class LoginController extends HttpServlet {
                 response.addCookie(ck);//adding cookie in the response 
             } else {
                 Cookie ck = new Cookie("username", username);//creating cookie object 
-                ck.setMaxAge(60*5);
+                ck.setMaxAge(60 * 5);
                 response.addCookie(ck);
             }
             Usuario user = userS.login(username, pass);

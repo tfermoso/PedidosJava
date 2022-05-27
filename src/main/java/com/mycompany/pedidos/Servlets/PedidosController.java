@@ -5,7 +5,9 @@
 package com.mycompany.pedidos.Servlets;
 
 import com.mycompany.pedidos.Config.Mail;
+import com.mycompany.pedidos.Models.Producto;
 import com.mycompany.pedidos.Models.Usuario;
+import com.mycompany.pedidos.Servicios.ProductService;
 import jakarta.servlet.RequestDispatcher;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
@@ -13,6 +15,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.List;
 
 /**
  *
@@ -24,7 +27,7 @@ public class PedidosController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        Mail.sendMail();
+        //Mail.sendMail();
         Usuario user = (Usuario) request.getSession().getAttribute("userSession");
         if (user == null) {
             response.sendRedirect(request.getContextPath() + "/");
@@ -37,6 +40,9 @@ public class PedidosController extends HttpServlet {
             } else if (request.getParameter("id") != null) {
                 dispatcher = request.getRequestDispatcher("Views/Gestion/editarpedido.jsp");
             } else {
+                ProductService pservice=new ProductService();
+                List<Producto> productos=pservice.listadoProductos();
+                request.setAttribute("productos", productos);
                 dispatcher = request.getRequestDispatcher("Views/Gestion/index.jsp");
 
             }

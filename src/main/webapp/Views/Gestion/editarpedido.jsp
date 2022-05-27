@@ -3,7 +3,7 @@
 
   <!-- Begin Page Content -->
                 <div class="container-fluid">
-                    <h2>Nuevo Pedido</h2>
+                    <h2>Editar Pedido</h2>
                     <a href="/"></a>
 
                 </div>

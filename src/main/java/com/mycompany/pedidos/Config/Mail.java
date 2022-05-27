@@ -26,7 +26,7 @@ public class Mail {
         //provide sender's email ID
         String from = "bueuttp@gmail.com";
         //provide Mailtrap's username
-        final String username = "bueuttp@gmail.com";
+        final String username = "bueuttp";
         //provide Mailtrap's password
         final String password = "atomarporsaco69";
 
