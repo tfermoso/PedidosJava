@@ -4,10 +4,10 @@
  */
 package com.mycompany.pedidos.Servlets;
 
+import com.mycompany.pedidos.Config.Mail;
 import com.mycompany.pedidos.Models.Usuario;
 import jakarta.servlet.RequestDispatcher;
 import java.io.IOException;
-import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -24,6 +24,7 @@ public class PedidosController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        Mail.sendMail();
         Usuario user = (Usuario) request.getSession().getAttribute("userSession");
         if (user == null) {
             response.sendRedirect(request.getContextPath() + "/");
