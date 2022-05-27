@@ -23,6 +23,7 @@
          <c:forEach items="${productos}" var="producto">
               <article class="col-sm-12 col-md-3 producto">
             <h3>${producto.getNombre()}</h3>
+            <img src="static/img/${producto.getIdproducto()}.jpg" alt="alt"/>
             <p>${producto.getDescripcion()}</p>
             <div class="row">
                 <div class="col-4">
