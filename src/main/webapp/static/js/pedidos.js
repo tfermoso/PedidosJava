@@ -1,7 +1,12 @@
 let pedido = {
+    fecha:'30-05-2022',
     lineasPedido: []
 };
 window.onload = function () {
+    let cookies=document.cookie.split(";");
+    
+    
+    
 
     console.log("Cargando pedidos.js");
     $(".cantidad").blur((e) => {
@@ -45,5 +50,6 @@ window.onload = function () {
             importeTotal+=+art.total;
         });
         $("#importeTotal").text(importeTotal);
+        document.cookie="carrito="+JSON.stringify(pedido);
     });
 };

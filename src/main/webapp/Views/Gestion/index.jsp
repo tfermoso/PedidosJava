@@ -18,6 +18,7 @@
             </div>
         </div>
     </div>
+    ${carrito}
     <hr>
     <div id="productos" class="row">
          <c:forEach items="${productos}" var="producto">

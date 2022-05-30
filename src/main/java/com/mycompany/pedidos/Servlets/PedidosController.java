@@ -12,6 +12,7 @@ import jakarta.servlet.RequestDispatcher;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -43,6 +44,17 @@ public class PedidosController extends HttpServlet {
                 ProductService pservice=new ProductService();
                 List<Producto> productos=pservice.listadoProductos();
                 request.setAttribute("productos", productos);
+                String carrito = "";
+                    if (request.getCookies() != null) {
+                        for (int i = 0; i < request.getCookies().length; i++) {
+                            Cookie cooky = request.getCookies()[i];
+                            carrito+=cooky.getName();
+                            if (cooky.getName().equals("carrito")) {
+                                carrito = cooky.getValue();
+                            }
+                        }
+                    }
+                request.setAttribute("carrito", carrito);
                 dispatcher = request.getRequestDispatcher("Views/Gestion/index.jsp");
 
             }
