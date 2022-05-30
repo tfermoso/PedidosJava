@@ -13,8 +13,8 @@
         </div>
         <div class="form-group col-md-6">
             <div class="row">
-                <div class="col-6">Cantidad de Productos</div>
-                <div class="col-6">Importe Pedido</div>
+                <div class="col-6"><p>Cantidad de Productos</p><p id="cantProductos"></p></div>
+                <div class="col-6"><p>Importe Pedido</p><p id="importeTotal"></p></div>
             </div>
         </div>
     </div>
@@ -25,22 +25,22 @@
             <h3>${producto.getNombre()}</h3>
             <img src="static/img/${producto.getIdproducto()}.jpg" alt="alt"/>
             <p>${producto.getDescripcion()}</p>
-            <div class="row">
+            <div class="row" id="${producto.getIdproducto()}">
                 <div class="col-4">
                     <label>Precio</label>
-                    <input class="form-control" type="number" readonly value="${producto.getPrecio()}">
+                    <input class="form-control precio" id="precio${producto.getIdproducto()}" type="number" readonly value="${producto.getPrecio()}">
                 </div>
                 <div class="col-4">
                     <label>Cantidad</label>
-                    <input class="form-control" type="number">
+                    <input class="form-control cantidad" id="cantidad${producto.getIdproducto()}" type="number">
                 </div>
                 <div class="col-4">
                     <label>Total</label>
-                    <input class="form-control" type="number"><!-- comment -->
+                    <input class="form-control total" id="total${producto.getIdproducto()}" type="number"><!-- comment -->
                 </div>
             </div>
             <br>
-            <button class="btn btn-success">Añadir al carrito</button>
+            <button class="btn btn-success btnAddToCart" id="btnAddToCart${producto.getIdproducto()}">Añadir al carrito</button>
         </article>
         </c:forEach>
 
