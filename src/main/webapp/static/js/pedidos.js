@@ -23,8 +23,9 @@ window.onload = function () {
         $.ajax({
             url: url,
             dataType: 'JSON',
+            contentType: "application/json",
             method: 'POST',
-            data:{'pedido':datosPedido},
+            data:datosPedido,
             success: function (result) {
                 console.log(result);
 
