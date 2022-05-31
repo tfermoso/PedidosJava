@@ -11,6 +11,10 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.io.BufferedReader;
+import org.json.HTTP;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  *
@@ -33,20 +37,25 @@ public class AjaxServlet extends HttpServlet {
         PrintWriter out = response.getWriter();
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
-        String accion=request.getParameter("accion");
-        
+        String accion = request.getParameter("accion");
+
         if ("comprobarcif".equals(accion)) {
-            String cif=request.getParameter("valor");
-            UsuarioService userS=new UsuarioService();
-            boolean resultado=userS.comprobar(cif,"cif");      
-            String json="{\"response\":"+resultado+"}";
+            String cif = request.getParameter("valor");
+            UsuarioService userS = new UsuarioService();
+            boolean resultado = userS.comprobar(cif, "cif");
+            String json = "{\"response\":" + resultado + "}";
             out.print(json);
             out.flush();
-        }else if("comprobarusername".equals(accion)){
-            String username=request.getParameter("valor");
-            UsuarioService userS=new UsuarioService();
-            boolean resultado=userS.comprobar(username,"username");
-            String json="{\"response\":"+resultado+"}";
+        } else if ("comprobarusername".equals(accion)) {
+            String username = request.getParameter("valor");
+            UsuarioService userS = new UsuarioService();
+            boolean resultado = userS.comprobar(username, "username");
+            String json = "{\"response\":" + resultado + "}";
+            out.print(json);
+            out.flush();
+        } else if ("crearpedido".equals(accion)) {
+            String pedido = request.getParameter("valor");
+            String json = "{\"response\":" + pedido + "}";
             out.print(json);
             out.flush();
         }
@@ -63,6 +72,31 @@ public class AjaxServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
+        StringBuffer jb = new StringBuffer();
+        String line = null;
+        try {
+            BufferedReader reader = request.getReader();
+            while ((line = reader.readLine()) != null) {
+                jb.append(line);
+            }
+        } catch (Exception e) {
+            /*report an error*/
+        }
+
+        try {
+            JSONObject jsonObject = HTTP.toJSONObject(jb.toString());
+        } catch (JSONException e) {
+            // crash and burn
+            throw new IOException("Error parsing JSON request string");
+        }
+
+        PrintWriter out = response.getWriter();
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        String json = "{\"response\":" + "Pedido creado" + "}";
+        out.print(json);
+        out.flush();
     }
 
     /**

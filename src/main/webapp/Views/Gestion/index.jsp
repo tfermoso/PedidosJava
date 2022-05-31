@@ -21,32 +21,33 @@
     ${carrito}
     <hr>
     <div id="productos" class="row">
-         <c:forEach items="${productos}" var="producto">
-              <article class="col-sm-12 col-md-3 producto">
-            <h3>${producto.getNombre()}</h3>
-            <img src="static/img/${producto.getIdproducto()}.jpg" alt="alt"/>
-            <p>${producto.getDescripcion()}</p>
-            <div class="row" id="${producto.getIdproducto()}">
-                <div class="col-4">
-                    <label>Precio</label>
-                    <input class="form-control precio" id="precio${producto.getIdproducto()}" type="number" readonly value="${producto.getPrecio()}">
+        <c:forEach items="${productos}" var="producto">
+            <article class="col-sm-12 col-md-3 producto">
+                <h3>${producto.getNombre()}</h3>
+                <img src="static/img/${producto.getIdproducto()}.jpg" alt="alt"/>
+                <p>${producto.getDescripcion()}</p>
+                <div class="row" id="${producto.getIdproducto()}">
+                    <div class="col-4">
+                        <label>Precio</label>
+                        <input class="form-control precio" id="precio${producto.getIdproducto()}" type="number" readonly value="${producto.getPrecio()}">
+                    </div>
+                    <div class="col-4">
+                        <label>Cantidad</label>
+                        <input class="form-control cantidad" id="cantidad${producto.getIdproducto()}" type="number">
+                    </div>
+                    <div class="col-4">
+                        <label>Total</label>
+                        <input class="form-control total" id="total${producto.getIdproducto()}" type="number"><!-- comment -->
+                    </div>
                 </div>
-                <div class="col-4">
-                    <label>Cantidad</label>
-                    <input class="form-control cantidad" id="cantidad${producto.getIdproducto()}" type="number">
-                </div>
-                <div class="col-4">
-                    <label>Total</label>
-                    <input class="form-control total" id="total${producto.getIdproducto()}" type="number"><!-- comment -->
-                </div>
-            </div>
-            <br>
-            <button class="btn btn-success btnAddToCart" id="btnAddToCart${producto.getIdproducto()}">Añadir al carrito</button>
-        </article>
+                <br>
+                <button class="btn btn-success btnAddToCart" id="btnAddToCart${producto.getIdproducto()}">Añadir al carrito</button>
+            </article>
         </c:forEach>
-
     </div>
-</div>
-    <!-- /.container-fluid -->
+    <button id="btnCrearPedido" class="btn btn-success btn-lg">Crear Pedido</button>
 
-    <%@include file="../Fragment/footer.jspf" %>
+</div>
+<!-- /.container-fluid -->
+
+<%@include file="../Fragment/footer.jspf" %>

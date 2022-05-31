@@ -43,18 +43,7 @@ public class PedidosController extends HttpServlet {
             } else {
                 ProductService pservice=new ProductService();
                 List<Producto> productos=pservice.listadoProductos();
-                request.setAttribute("productos", productos);
-                String carrito = "";
-                    if (request.getCookies() != null) {
-                        for (int i = 0; i < request.getCookies().length; i++) {
-                            Cookie cooky = request.getCookies()[i];
-                            carrito+=cooky.getName();
-                            if (cooky.getName().equals("carrito")) {
-                                carrito = cooky.getValue();
-                            }
-                        }
-                    }
-                request.setAttribute("carrito", carrito);
+                request.setAttribute("productos", productos);               
                 dispatcher = request.getRequestDispatcher("Views/Gestion/index.jsp");
 
             }
