@@ -90,21 +90,25 @@ public class AjaxServlet extends HttpServlet {
             BufferedReader rd=request.getReader();
             StringBuffer sb=new StringBuffer();
             String line=null;
+            String resp = "";
             while((line=rd.readLine())!=null){
                 sb.append(line);
             }
             //JsonObject data = new Gson().fromJson(request.getReader(), JsonObject.class);
             JSONObject jsonRequest=new JSONObject(sb.toString());
-            Usuario user = (Usuario) request.getSession().getAttribute("userSession");
-
-            Pedido pedido=convertirPedido(jsonRequest,user);
-            PedidoService pedidoService=new PedidoService();
-            String resp="";
-            if(pedidoService.crearPedido(pedido)){
-                resp="Pedido creado correctamente";
-            }else{
-                resp="Error al crear el pedido";
+            String op=jsonRequest.getString("operacion");
+            if("crearPedido".equals(op)){
+                Usuario user = (Usuario) request.getSession().getAttribute("userSession");
+                Pedido pedido = convertirPedido(jsonRequest.getJSONObject("datos"), user);
+                PedidoService pedidoService = new PedidoService();
+                
+                if (pedidoService.crearPedido(pedido)) {
+                    resp = "Pedido creado correctamente";
+                } else {
+                    resp = "Error al crear el pedido";
+                }
             }
+            
             PrintWriter out = response.getWriter();
             
             response.setContentType("application/json");

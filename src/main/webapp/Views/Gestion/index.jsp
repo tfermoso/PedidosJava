@@ -44,7 +44,10 @@
             </article>
         </c:forEach>
     </div>
-    <button id="btnCrearPedido" class="btn btn-success btn-lg">Crear Pedido</button>
+    <button id="btnCrearPedido" class="btn btn-success btn-lg">       
+        <span>Crear Pedido</span>
+        <span id="cargando" class="spinner-border spinner-border-sm" role="status" aria-hidden="false" style="display: none;"></span>
+    </button>
 
 </div>
 <!-- /.container-fluid -->

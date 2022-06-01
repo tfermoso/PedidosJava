@@ -18,8 +18,13 @@ window.onload = function () {
     });
 
     $("#btnCrearPedido").click(() => {
-        let datosPedido = JSON.stringify(pedido);
+        let datos={
+            operacion:"crearPedido",
+            datos:pedido
+        };
+        let datosPedido = JSON.stringify(datos);
         let url = "./api";
+        $("#cargando").show();
         $.ajax({
             url: url,
             dataType: 'JSON',
@@ -27,12 +32,14 @@ window.onload = function () {
             method: 'POST',
             data:datosPedido,
             success: function (result) {
+                $("#cargando").hide();
                 if(result.response=="Pedido creado correctamente"){
                     alert(result.response);
                 }
 
             },
             error: function (err) {
+                $("#cargando").hide();
                 console.log(err);
             }
         });
