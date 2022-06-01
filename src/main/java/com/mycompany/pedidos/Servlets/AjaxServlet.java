@@ -4,8 +4,7 @@
  */
 package com.mycompany.pedidos.Servlets;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
+
 import com.mycompany.pedidos.Servicios.UsuarioService;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -14,7 +13,6 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
-import java.util.List;
 import org.json.JSONObject;
 
 /**
