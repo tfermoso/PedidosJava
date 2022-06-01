@@ -27,7 +27,9 @@ window.onload = function () {
             method: 'POST',
             data:datosPedido,
             success: function (result) {
-                console.log(result);
+                if(result.response=="Pedido creado correctamente"){
+                    alert(result.response);
+                }
 
             },
             error: function (err) {

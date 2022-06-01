@@ -5,6 +5,10 @@
 package com.mycompany.pedidos.Servlets;
 
 
+import com.mycompany.pedidos.Models.DetallePedido;
+import com.mycompany.pedidos.Models.Pedido;
+import com.mycompany.pedidos.Models.Usuario;
+import com.mycompany.pedidos.Servicios.PedidoService;
 import com.mycompany.pedidos.Servicios.UsuarioService;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -13,6 +17,15 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
+import java.sql.Date;
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.util.Calendar;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
@@ -71,6 +84,7 @@ public class AjaxServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
         try {
             //Gson gson=new Gson();
             BufferedReader rd=request.getReader();
@@ -81,11 +95,21 @@ public class AjaxServlet extends HttpServlet {
             }
             //JsonObject data = new Gson().fromJson(request.getReader(), JsonObject.class);
             JSONObject jsonRequest=new JSONObject(sb.toString());
+            Usuario user = (Usuario) request.getSession().getAttribute("userSession");
+
+            Pedido pedido=convertirPedido(jsonRequest,user);
+            PedidoService pedidoService=new PedidoService();
+            String resp="";
+            if(pedidoService.crearPedido(pedido)){
+                resp="Pedido creado correctamente";
+            }else{
+                resp="Error al crear el pedido";
+            }
             PrintWriter out = response.getWriter();
             
             response.setContentType("application/json");
             response.setCharacterEncoding("UTF-8");
-            String json = "{\"response\":" + jsonRequest.toString() + "}";
+            String json = "{\"response\":\"" + resp + "\"}";
             out.print(json);
             out.flush();
         } catch (Exception e) {
@@ -104,4 +128,22 @@ public class AjaxServlet extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
+    private Pedido convertirPedido(JSONObject objPedido,Usuario user){
+        
+        Pedido pedido=new Pedido();
+        pedido.setIdCliente(user.getIdcliente());
+        Date fecha_entrega = Date.valueOf(objPedido.getString("fecha"));
+        pedido.setFecha_entrega(fecha_entrega);
+        JSONArray lineas= objPedido.getJSONArray("lineasPedido");
+        for (int i = 0; i < lineas.length(); i++) {
+            JSONObject detalle = lineas.getJSONObject(i);
+            DetallePedido detallePedido=new DetallePedido();
+            detallePedido.setIdproducto(detalle.getInt("idArticulo"));
+            detallePedido.setCantidad(detalle.getInt("cantidad"));
+            detallePedido.setPrecio(detalle.getDouble("precio"));
+            pedido.detalle.add(detallePedido);
+        }
+       
+        return pedido;
+    }
 }
